@@ -14,9 +14,10 @@ import { ServicioPedido } from '../servicios/servicio-pedido';
 export class Comidas implements OnInit {
 
   categorias: any[] = [];
-  comidas: Comida[] = [];              
-  detalleComida: Comida = new Comida(); 
+  comidas: Comida[] = [];
+  detalleComida: Comida = new Comida();
 
+  mensajeModal: String = "";
   textoNombre: string = '';
   textoIngrediente: string = '';
 
@@ -73,7 +74,7 @@ export class Comidas implements OnInit {
 
       comidasBasicas.forEach((m: any) => {
         this.servicioComida.getDetalleComida(m.idMeal).subscribe(detalle => {
-          const nuevaComida = this.crearComida(detalle.meals[0]); 
+          const nuevaComida = this.crearComida(detalle.meals[0]);
           this.comidas.push(nuevaComida);
           this.cd.detectChanges();
         });
@@ -89,7 +90,7 @@ export class Comidas implements OnInit {
     this.textoIngrediente = '';
 
     this.servicioComida.buscarComidaPorNombre(this.textoNombre).subscribe(data => {
-      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComida(m)) : []; // 👈
+      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComida(m)) : [];
       this.cd.detectChanges();
     });
   }
@@ -108,7 +109,7 @@ export class Comidas implements OnInit {
 
       comidas.forEach((m: any) => {
         this.servicioComida.getDetalleComida(m.idMeal).subscribe(detalle => {
-          const nuevaComida = this.crearComida(detalle.meals[0]); 
+          const nuevaComida = this.crearComida(detalle.meals[0]);
           this.comidas.push(nuevaComida);
           this.cd.detectChanges();
         });
@@ -118,16 +119,19 @@ export class Comidas implements OnInit {
 
   verIngredientes(id: string) {
     this.servicioComida.getDetalleComida(id).subscribe(data => {
-      this.detalleComida = this.crearComida(data.meals[0]); 
+      this.detalleComida = this.crearComida(data.meals[0]);
       this.cd.detectChanges();
     });
   }
 
-   agregarComida(comida: Comida) {
+  agregarComida(comida: Comida) {
     // Hacemos una copia para que si luego cambias la cantidad en la tarjeta,
     // no se altere lo que ya quedó guardado en el pedido
     const copia: Comida = { ...comida };
     this.servicioPedido.agregarComida(copia);
-    alert(comida.nombre + ' fue agregada al pedido');
+
+    const modal = new (window as any).bootstrap.Modal(document.getElementById('myModal'));
+    this.mensajeModal = comida.nombre + " fue agregada correctamente al pedido (cant: " + comida.cantidad + ")";
+    modal.show();
   }
 }

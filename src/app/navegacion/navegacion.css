@@ -1,75 +1,90 @@
-img{
+img {
     width: 120px;
-    margin-left:70px;
+    margin-left: 70px;
 }
+
 .navbar {
     background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px); 
+    backdrop-filter: blur(5px);
     border-bottom: 4px groove #a08231;
-    position:fixed;
+    position: fixed;
 }
-.nav-link{
-    color: white; 
-    -webkit-text-stroke: 1px  #221b07; 
+
+.nav-link {
+    color: white;
+    -webkit-text-stroke: 1px #221b07;
     text-shadow: 1px 1px 5px rgb(12, 1, 1);
-    font-family: 'Playfair Display', serif;  
+    font-family: 'Playfair Display', serif;
     font-weight: bold;
     font-size: 20px;
-    text-align: right;  
-    margin-right:15px;
+    text-align: right;
+    margin-right: 15px;
     background-color: #daaf3b;
     border-radius: 30PX;
     border: 4px ridge #a08231;
     border-bottom: 4px groove #a08231;
     border-right: 4px groove #a08231;
 }
-ul{
-    margin-right:20px;
-    margin-top:5px;
+
+ul {
+    margin-right: 20px;
+    margin-top: 5px;
 }
+
 .nav-link:hover {
     color: rgb(7, 0, 0);
     transform: scale(1.08);
     text-shadow: 0 0 10px rgba(19, 16, 1, 0.7);
 }
+
 .nav-link.active {
-    background-color: #d4af37; 
+    background-color: #d4af37;
     color: rgb(158, 48, 48);
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     transform: scale(1.05);
 }
+
 .spotify-player {
-    border: 3px ridge #daaf3b; 
-    border-radius: 12px;       
-    width:288px;
-    height:88px
+    border: 3px ridge #daaf3b;
+    border-radius: 12px;
+    width: 288px;
+    height: 88px
 }
+
 .navbar-toggler {
-    border: 2px solid #daaf3b; 
-    background-color:rgb(158, 48, 48);
+    border: 2px solid #daaf3b;
+    background-color: rgb(158, 48, 48);
     border-radius: 10px;
     margin-left: 30px;
-    margin-right:20px;
+    margin-right: 20px;
 }
 
 
 @media (max-width: 768px) {
-    img{
-        margin-left:auto;
+    img {
+        margin-left: auto;
     }
 }
+
 @media (max-width: 1000px) {
-    .nav-link{
-        margin-top:10px;
-        margin-left:15px;
-        margin-right:60%;
-        padding-left:20px;
-        padding-right:20px;
+    .nav-link {
+        margin-top: 10px;
+        margin-left: 15px;
+        margin-right: 60%;
+        padding-left: 20px;
+        padding-right: 20px;
         text-align: center;
     }
 }
+
 @media (max-width: 1800px) {
-    .navbar{
-        position:absolute;
+    .navbar {
+        position: absolute;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        position: relative !important;
     }
 }

@@ -1,13 +1,16 @@
-body{
-    background-image: url("https://static.vecteezy.com/system/resources/previews/016/892/126/original/chinese-new-year-2023-chinese-frame-background-asian-elements-with-craft-style-on-background-vector.jpg"); 
-    /*background-size:cover;*/
-    background-position: center;   
-    background-attachment: fixed; 
+body {
+  background-image: url("https://static.vecteezy.com/system/resources/previews/016/892/126/original/chinese-new-year-2023-chinese-frame-background-asian-elements-with-craft-style-on-background-vector.jpg");
+  /*background-size:cover;*/
+  background-position: center;
+  background-attachment: fixed;
 }
-html, body {
+
+html,
+body {
   width: 100%;
-  overflow-x: hidden; /* 🔹 oculta cualquier scroll horizontal */
+  overflow-x: hidden;
 }
+
 * {
-  box-sizing: border-box; /* 🔹 evita que márgenes o bordes sumen ancho extra */
+  box-sizing: border-box;
 }

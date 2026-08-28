@@ -5,9 +5,9 @@ import { Juego } from './juego/juego';
 import { Pedido } from './pedido/pedido';
 
 export const routes: Routes = [
-    { path: 'comidas', component: Comidas},
-    { path: 'bebidas', component: Bebidas},
-    { path: 'pedido', component: Pedido},
-    { path: 'juego', component: Juego},
+    { path: 'comidas', component: Comidas },
+    { path: 'bebidas', component: Bebidas },
+    { path: 'pedido', component: Pedido },
+    { path: 'juego', component: Juego },
     { path: '**', redirectTo: '' }
 ];

@@ -1,95 +1,121 @@
+<div class="barra-superior">
+    <div class="bebidas">
+        <h2>CATEGORÍAS 🍹</h2>
+    </div>
 
-  <div class="barra-superior">
-  <div class="bebidas">
-    <h2>CATEGORÍAS 🍹</h2>
-  </div>
+    <div class="busquedas-container">
+        <form class="busqueda">
+            <input class="form-control me-2" type="text" placeholder="Buscar Bebida por Nombre . . ."
+                name="inputNombreTop" [(ngModel)]="textoNombre">
+            <button (click)="buscarNombre()" class="btn btn-primary" type="button">Buscar</button>
+        </form>
+        <form class="busqueda">
+            <input class="form-control me-2" type="text" placeholder="Buscar Bebida por Ingrediente . . ."
+                name="inputIngredienteTop" [(ngModel)]="textoIngrediente">
+            <button (click)="buscarIngrediente()" class="btn btn-primary" type="button">Buscar</button>
+        </form>
 
-  <div class="busquedas-container">
-    <form class="busqueda">
-      <input class="form-control me-2" type="text" placeholder="Buscar Bebida por Nombre . . ." name="inputNombreTop"
-        [(ngModel)]="textoNombre">
-      <button (click)="buscarNombre()" class="btn btn-primary" type="button">Buscar</button>
-    </form>
-    <form class="busqueda">
-      <input class="form-control me-2" type="text" placeholder="Buscar Bebida por Ingrediente . . ."
-        name="inputIngredienteTop" [(ngModel)]="textoIngrediente">
-      <button (click)="buscarIngrediente()" class="btn btn-primary" type="button">Buscar</button>
-    </form>
+        <div class="menu-bebida">
+            <label for="tipo-bebida">Tipo de Bebida:</label>
+            <select id="tipo-bebida" class="form-control" [(ngModel)]="tipoSeleccionado" (change)="filtrarPorTipo()">
+                <option value="">Elegir</option>
+                <option value="Non_Alcoholic">Sin Alcohol</option>
+                <option value="Alcoholic">Con Alcohol</option>
+            </select>
+        </div>
 
-    <div class="menu-bebida">
-  <label for="tipo-bebida">Tipo de Bebida:</label>
-  <select id="tipo-bebida" class="form-control" [(ngModel)]="tipoSeleccionado" (change)="filtrarPorTipo()">
-    <option value="">Elegir</option>
-    <option value="Non_Alcoholic">Sin Alcohol</option>
-    <option value="Alcoholic">Con Alcohol</option>
-  </select>
-</div>
-
-<div class="menu-bebida">
-  <label for="categoria-bebida">Categoría de Bebida:</label>
-  <select id="categoria-bebida" class="form-control" [(ngModel)]="categoriaSeleccionada" (change)="filtrarPorCategoria()">
-    <option value="">Elegir</option>
-    <option value="Ordinary Drink">Ordinaria</option>
-    <option value="Cocktail">Cóctel</option>
-  </select>
-</div>
-  </div>
+        <div class="menu-bebida">
+            <label for="categoria-bebida">Categoría de Bebida:</label>
+            <select id="categoria-bebida" class="form-control" [(ngModel)]="categoriaSeleccionada"
+                (change)="filtrarPorCategoria()">
+                <option value="">Elegir</option>
+                <option value="Ordinary Drink">Ordinaria</option>
+                <option value="Cocktail">Cóctel</option>
+            </select>
+        </div>
+    </div>
 </div>
 
 
 
 <section class="container-fluid py-2">
-  <div class="row categorias-row justify-content-center">
-    <div *ngFor="let c of categorias" class="col-lg-2 col-md-3 col-sm-4 mb-3">
-      <div class="card categoria-card text-center border-0 shadow-lg">
-        <div class="card-body">
-          <h5 class="card-title text-warning fw-semibold">{{ c.strCategory }}</h5>
-          <button class="btn btn-sm mt-2" (click)="verBebidas(c.strCategory)">
-            Ver bebidas
-          </button>
+    <div class="row categorias-row justify-content-center">
+        <div *ngFor="let c of categorias" class="col-lg-2 col-md-3 col-sm-4 mb-3">
+            <div class="card categoria-card text-center border-0 shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-warning fw-semibold">{{ c.strCategory }}</h5>
+                    <button class="btn btn-sm mt-2" (click)="verBebidas(c.strCategory)">
+                        Ver bebidas
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
 <section class="container-fluid p-0">
-  <div *ngIf="bebidas && bebidas.length > 0" class="row justify-content-center mb-4">
-    <div class="col-12 text-center">
-      <h2 class="text-warning fw-bold titulo-bebidas">Nuestras Bebidas</h2>
-      <hr class="border-warning w-25 mx-auto">
-    </div>
-  </div>
-
-  <div class="row justify-content-center mx-auto">
-    <div *ngFor="let b of bebidas" class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card bebida-card text-center border-0 shadow-lg">
-        <img [src]="b.imagen" class="card-img-top rounded-top" alt="{{ b.nombre }}">
-        <div class="card-body">
-          <h5 class="card-title text-warning fw-semibold">{{ b.nombre }}</h5>
-          <p class="card-text text-light">
-            Ingredientes: {{ b.ingredientes.join(", ") }}
-          </p>
-          
-          <div class="d-flex align-items-center gap-2">
-            <input type="number" [(ngModel)]="b.cantidad" min="1"
-              class="form-control form-control-sm text-center text-black border-secondary border-opacity-50 rounded-2 shadow-sm"
-              style="width: 65px; height: 36px;" value="1" min="1">
-
-            <button (click)="agregarBebida(b)"
-              class="btn btn-warning text-dark btn-sm flex-grow-1 fw-bold rounded-2 shadow-sm d-flex align-items-center justify-content-center gap-2">
-              🛒 Comprar
-            </button>
-            
-            <div class="position-absolute top-0 end-0 m-3">
-              <span class="badge rounded-pill px-3 py-2 border border-warning border-opacity-30 shadow-sm text-warning"
-                style="background-color: rgba(9, 14, 20, 0.85); backdrop-filter: blur(6px); font-size: 0.85rem; font-weight: 500;">
-                $ {{ b.precio | number }}
-              </span>
-            </div>
-          </div>
+    <div *ngIf="bebidas && bebidas.length > 0" class="row justify-content-center mb-4">
+        <div class="col-12 text-center">
+            <h2 class="text-warning fw-bold titulo-bebidas">Nuestras Bebidas</h2>
+            <hr class="border-warning w-25 mx-auto">
         </div>
-      </div>
     </div>
-  </div>
+
+    <div class="row justify-content-center mx-auto">
+        <div *ngFor="let b of bebidas" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card bebida-card text-center border-0 shadow-lg">
+                <img [src]="b.imagen" class="card-img-top rounded-top" alt="{{ b.nombre }}">
+                <div class="card-body">
+                    <h5 class="card-title text-warning fw-semibold">{{ b.nombre }}</h5>
+                    <p class="card-text text-light">
+                        Ingredientes: {{ b.ingredientes.join(", ") }}
+                    </p>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="number" [(ngModel)]="b.cantidad" min="1"
+                            class="form-control form-control-sm text-center text-black border-secondary border-opacity-50 rounded-2 shadow-sm"
+                            style="width: 65px; height: 36px;" value="1" min="1">
+
+                        <button (click)="agregarBebida(b)"
+                            class="btn btn-warning text-dark btn-sm flex-grow-1 fw-bold rounded-2 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                            🛒 Comprar
+                        </button>
+
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span
+                                class="badge rounded-pill px-3 py-2 border border-warning border-opacity-30 shadow-sm text-warning"
+                                style="background-color: rgba(9, 14, 20, 0.85); backdrop-filter: blur(6px); font-size: 0.85rem; font-weight: 500;">
+                                $ {{ b.precio | number }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">COMPRA DE BEBIDAS</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                {{mensajeModal}}
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+            </div>
+
+        </div>
+    </div>
+</div>

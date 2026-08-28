@@ -1,33 +1,33 @@
-  <section class="historia">
+<section class="historia">
   <h2>⛩️ Nuestra Historia ⛩️</h2>
   <p>
-    Manila nació del deseo de unir la tradición y la modernidad. Cada plato es una historia, 
-    cada bebida es una experiencia. Inspirados en los mercados de Filipinas y la elegancia japonesa, 
+    Manila nació del deseo de unir la tradición y la modernidad. Cada plato es una historia,
+    cada bebida es una experiencia. Inspirados en los mercados de Filipinas y la elegancia japonesa,
     ofrecemos un viaje sensorial que celebra la cultura oriental.
   </p>
   <p>
-    Nuestro compromiso es brindar una experiencia única, donde los sabores, aromas y colores 
-    se fusionan para crear momentos inolvidables. Un lugar donde la gastronomía se convierte en un <br> mundo de arte y fantasía, Manila ...
+    Nuestro compromiso es brindar una experiencia única, donde los sabores, aromas y colores
+    se fusionan para crear momentos inolvidables. Un lugar donde la gastronomía se convierte en un <br> mundo de arte y
+    fantasía, Manila ...
   </p>
-</section>  
+</section>
 
 <section class="contenedor">
   <div class="bloque">
     <h2>⭐ PLATO ESTRELLA</h2>
     <div class="seccion">
-      <h3>Golden Dragon Roll</h3>
-      <img src="https://img.freepik.com/fotos-premium/deliciosa-comida-asiatica-sushi-plato-pescado-japones-delicioso-marisco-ia-generativa_116317-29228.jpg" alt="Plato estrella" class="comida">
-      <p>Roll de salmón fresco con aguacate y arroz sazonado, cubierto con salsa teriyaki y un toque cítrico de limón. La fusión perfecta entre tradición japonesa y la modernidad.</p>
+      <h3>{{ nombrePlatoEstrella }}</h3>
+      <img [src]="imagenPlatoEstrella" alt="Plato estrella" class="comida">
+      <p>{{descripcionPlatoEstrella}}</p>
     </div>
   </div>
 
   <div class="bloque">
     <h2>BEBIDA ESTRELLA ⭐</h2>
     <div class="seccion">
-      <h3>Loto Dorado Imperial</h3>
-      <img src="https://img.freepik.com/fotos-premium/dos-cocteles-elegantes-hermosa-guarnicion_608068-37733.jpg" alt="Plato estrella" class="bebida">
-      <p>Refrescante cóctel de frutas cítricas con notas de cereza y naranja, mezclado con un toque de licor oriental. El equilibrio perfecto entre la dulzura y la frescura oriental.</p>
+      <h3>{{ nombreBebidaEstrella }}</h3>
+      <img [src]="imagenBebidaEstrella" alt="Bebida estrella" class="bebida">
+      <p>{{descripcionBebidaEstrella}}</p>
     </div>
   </div>
 </section>
-

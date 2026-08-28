@@ -1,73 +1,73 @@
-img{
-    width:80px;
+img {
+  width: 80px;
 }
-table{
-    margin: 0 auto;
-    /*margin-left: 40%;*/
-    margin-top:35px;
-    margin-bottom:35px;
+
+table {
+  margin: 0 auto;
+  margin-top: 35px;
+  margin-bottom: 35px;
 }
 
 .sec3 h2 {
-    font-size: 20px;
-    margin-top:190px;
-    font-weight: bold;
-    color: #ffffff; /* dorado brillante */
-    text-align: center;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  font-size: 20px;
+  margin-top: 190px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .tabla {
-    border-collapse: separate;
-    border-spacing: 12px; /* mantiene espacio entre imágenes */
-    background-color: transparent;
+  border-collapse: separate;
+  border-spacing: 12px;
+  background-color: transparent;
 }
 
 .tabla th {
-    border: 2px solid #a08231; /* borde dorado */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(160,130,49,0.6);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #a08231;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(160, 130, 49, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tabla th:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255,215,0,0.8);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
 }
 
 .tabla img {
-    width: 80px; /* mantiene tu tamaño */
-    border-radius: 8px;
-    filter: brightness(0.9);
-    transition: filter 0.3s ease;
+  width: 80px;
+  border-radius: 8px;
+  filter: brightness(0.9);
+  transition: filter 0.3s ease;
 }
 
 .tabla img:hover {
-    filter: brightness(1.2);
+  filter: brightness(1.2);
 }
 
 label {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 35px;
-    font-size: 30px;
-    color: #d4af37; /* dorado brillante */
-    text-shadow: 1px 1px 3px #000;
-    text-align: center;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 35px;
+  font-size: 30px;
+  color: #d4af37;
+  text-shadow: 1px 1px 3px #000;
+  text-align: center;
 }
 
 .modal-content {
-  background-color: #4a0e0e; /* rojo oscuro */
-  border: 3px double #d4af37; /* borde dorado */
-  box-shadow: 0 0 25px rgba(212,175,55,0.6);
-  color: #f5e6c8; /* dorado claro para texto */
+  background-color: #4a0e0e;
+  border: 3px double #d4af37;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+  color: #f5e6c8;
   font-family: 'Playfair Display', serif;
   text-align: center;
   border-radius: 15px;
 }
 
 .modal-header {
-  background-color: rgba(160,130,49,0.2);
+  background-color: rgba(160, 130, 49, 0.2);
   border-bottom: 2px solid #d4af37;
   color: #f5e6c8;
   font-weight: bold;
@@ -75,10 +75,10 @@ label {
 }
 
 .modal-title {
-    text-align: center;
+  text-align: center;
   font-size: 24px;
   color: #d4af37;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .modal-body {
@@ -89,7 +89,7 @@ label {
 
 .modal-footer {
   border-top: 2px solid #d4af37;
-  background-color: rgba(160,130,49,0.2);
+  background-color: rgba(160, 130, 49, 0.2);
 }
 
 .btn-danger {
@@ -104,24 +104,24 @@ label {
 .btn-danger:hover {
   background-color: #d4af37;
   color: #4a0e0e;
-  box-shadow: 0 0 10px rgba(255,215,0,0.8);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
 }
 
 .tabla th {
-  width: 90px; /* tamaño fijo */
-  height: 90px; /* igual altura */
+  width: 90px;
+  height: 90px;
   padding: 0;
   border: 2px solid #a08231;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(160,130,49,0.6);
-  overflow: hidden; /* evita que la imagen se salga */
-  vertical-align: middle; /* centra la imagen */
+  box-shadow: 0 0 10px rgba(160, 130, 49, 0.6);
+  overflow: hidden;
+  vertical-align: middle;
 }
 
 .tabla img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* mantiene proporción sin deformar */
+  object-fit: cover;
   border-radius: 8px;
   display: block;
 }
@@ -130,20 +130,19 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* ocupa toda la altura de la ventana */
+  min-height: 100vh;
 }
 
 .modal-backdrop.show {
-  background-color: rgba(0, 0, 0, 0.7); /* oscurece el fondo */
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal {
-  overflow: hidden !important; /* evita el scroll interno */
+  overflow: hidden !important;
 }
 
 @media (max-width: 570px) {
-    .sec3 h2{
-        margin-top:240px;
-    }
+  .sec3 h2 {
+    margin-top: 240px;
+  }
 }
-

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServicioPedido } from '../servicios/servicio-pedido';
-import jsPDF from 'jspdf'; // 👈 nuevo import
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-pedido',
@@ -10,14 +10,14 @@ import jsPDF from 'jspdf'; // 👈 nuevo import
   templateUrl: './pedido.html',
   styleUrl: './pedido.css',
 })
-export class Pedido implements OnInit{
+export class Pedido implements OnInit {
 
   logoImagen: HTMLImageElement = new Image();
+  mensajeModal: String = "";
 
-  // "public" para poder usar servicioPedido directamente en el HTML
-  constructor(public servicioPedido: ServicioPedido) {}
+  constructor(public servicioPedido: ServicioPedido) { }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.logoImagen.src = 'imagenes/logoManila.png';
   }
 
@@ -39,26 +39,26 @@ export class Pedido implements OnInit{
 
   confirmarPedido() {
     if (!this.servicioPedido.nombreComprador || !this.servicioPedido.telefonoComprador || !this.servicioPedido.direccionComprador) {
-      alert('Por favor completa tus datos personales antes de confirmar.');
+      const modal = new (window as any).bootstrap.Modal(document.getElementById('myModal'));
+      this.mensajeModal = "¡¡¡ Por favor completa tus datos personales antes de confirmar el pedido !!!";
+      modal.show();
       return;
     }
     if (this.servicioPedido.listaComidas.length === 0 && this.servicioPedido.listaBebidas.length === 0) {
       alert('Tu pedido está vacío.');
       return;
     }
-    this.generarFacturaPDF(); // 👈 nuevo
+    this.generarFacturaPDF();
     alert('¡Pedido confirmado! Gracias, ' + this.servicioPedido.nombreComprador);
     this.servicioPedido.vaciarPedido();
-  
+
   }
 
   private generarFacturaPDF() {
     const doc = new jsPDF();
 
-    // Logo arriba a la izquierda
     doc.addImage(this.logoImagen, 'PNG', 15, 10, 25, 25);
 
-    // Encabezado
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(20);
     doc.text('MANILA', 105, 22, { align: 'center' });
@@ -67,12 +67,10 @@ export class Pedido implements OnInit{
     doc.setFontSize(11);
     doc.text('Factura de Compra', 105, 29, { align: 'center' });
 
-    // Línea separadora
     doc.setDrawColor(160, 130, 49); // color dorado
     doc.setLineWidth(0.5);
     doc.line(15, 40, 195, 40);
 
-    // Fecha y hora actuales
     const ahora = new Date();
     doc.setFontSize(10);
     doc.text('Fecha: ' + ahora.toLocaleDateString(), 15, 48);
@@ -91,7 +89,6 @@ export class Pedido implements OnInit{
 
     doc.line(15, 90, 195, 90);
 
-    // Encabezado de la tabla de productos
     let y = 98;
     doc.setFont('helvetica', 'bold');
     doc.text('Producto', 15, y);
@@ -100,7 +97,6 @@ export class Pedido implements OnInit{
     doc.setFont('helvetica', 'normal');
     y += 7;
 
-    // Comidas
     this.servicioPedido.listaComidas.forEach(c => {
       doc.text(String(c.nombre), 15, y);
       doc.text(String(c.cantidad), 132, y);
@@ -108,7 +104,6 @@ export class Pedido implements OnInit{
       y += 7;
     });
 
-    // Bebidas
     this.servicioPedido.listaBebidas.forEach(b => {
       doc.text(String(b.nombre), 15, y);
       doc.text(String(b.cantidad), 132, y);
@@ -116,17 +111,14 @@ export class Pedido implements OnInit{
       y += 7;
     });
 
-    // Línea antes del total
     y += 3;
     doc.line(15, y, 195, y);
     y += 10;
 
-    // Total
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
     doc.text('Total: $ ' + this.calcularTotal().toLocaleString('en-US'), 195, y, { align: 'right' });
 
-    // Pie de página
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(9);
     doc.text('¡Gracias por tu compra en Manila!', 105, 280, { align: 'center' });
