@@ -45,13 +45,15 @@ export class Pedido implements OnInit {
       return;
     }
     if (this.servicioPedido.listaComidas.length === 0 && this.servicioPedido.listaBebidas.length === 0) {
-      alert('Tu pedido está vacío.');
+      const modal = new (window as any).bootstrap.Modal(document.getElementById('myModal'));
+      this.mensajeModal = "¡¡¡ El pedido de esta persona ya fue despachado, vuelve a hacer otro !!!";
+      modal.show();
       return;
     }
     this.generarFacturaPDF();
     const modal = new (window as any).bootstrap.Modal(document.getElementById('myModal'));
-      this.mensajeModal = "¡¡¡ ¡Pedido confirmado! Gracias, " + this.servicioPedido.nombreComprador + " por comprar en Manila !!!";
-      modal.show();
+    this.mensajeModal = "¡¡¡ Pedido confirmado, muchas Gracias " + this.servicioPedido.nombreComprador + " por comprar en Manila !!!";
+    modal.show();
     this.servicioPedido.vaciarPedido();
 
   }
