@@ -49,7 +49,9 @@ export class Pedido implements OnInit {
       return;
     }
     this.generarFacturaPDF();
-    alert('¡Pedido confirmado! Gracias, ' + this.servicioPedido.nombreComprador);
+    const modal = new (window as any).bootstrap.Modal(document.getElementById('myModal'));
+      this.mensajeModal = "¡¡¡ ¡Pedido confirmado! Gracias, " + this.servicioPedido.nombreComprador + " por comprar en Manila !!!";
+      modal.show();
     this.servicioPedido.vaciarPedido();
 
   }
