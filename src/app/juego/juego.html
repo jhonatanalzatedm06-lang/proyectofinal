@@ -1,0 +1,72 @@
+<section class="sec3">
+  <h2>🎮 ENCUENTRA EL PLATO Y LA COMIDA 🕹️</h2>
+  <div>
+    <table border="0" class="tabla" id="tabla">
+      <tr>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(1)" id="image1"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(2)" id="image2"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(3)" id="image3"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(4)" id="image4"></th>
+      </tr>
+      <tr>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(5)" id="image5"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(6)" id="image6"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(7)" id="image7"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(8)" id="image8"></th>
+
+      </tr>
+      <tr>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(9)" id="image9"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(10)" id="image10"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(11)" id="image11"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(12)" id="image12"></th>
+      </tr>
+      <tr>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(13)" id="image13"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(14)" id="image14"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(15)" id="image15"></th>
+        <th><img src="https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30455.jpg"
+            (click)="descubrirTabla(16)" id="image16"></th>
+      </tr>
+    </table>
+  </div>
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">🎉 GANASTE EL JUEGO 🎉</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          {{mensajeModal}}
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+.pedido-container {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    max-width: 700px;
+    margin: 190px auto 40px auto;
+    padding: 20px;
+}
+
+.titulo-pedido {
+    font-size: 30px;
+}
+
+.tabla-pedido {
+    margin-bottom: 25px;
+}
+
+.fila-pedido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background-color: rgba(9, 14, 20, 0.85);
+    border: 2px solid #daaf3b;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+
+.col-nombre {
+    flex: 1;
+    font-weight: bold;
+    color: #daaf3b;
+}
+
+.total-pedido {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.datos-comprador {
+    background-color: rgba(9, 14, 20, 0.85);
+    border: 2px solid #daaf3b;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.datos-comprador input {
+    border: 2px solid #daaf3b;
+    border-radius: 10px;
+}

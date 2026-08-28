@@ -1,0 +1,48 @@
+<section class="container-fluid pedido-container">
+
+  <h2 class="text-warning fw-bold text-center titulo-pedido">Tu Pedido 🧾</h2>
+  <hr class="border-warning w-25 mx-auto">
+
+  <!-- COMIDAS EN EL PEDIDO -->
+  <div class="tabla-pedido" *ngIf="servicioPedido.listaComidas.length > 0">
+    <h4 class="text-warning">Comidas</h4>
+    <div class="fila-pedido" *ngFor="let c of servicioPedido.listaComidas; let i = index">
+      <span class="col-nombre">{{ c.nombre }}</span>
+      <span class="col-cantidad">Cantidad: {{ c.cantidad }}</span>
+      <span class="col-subtotal">Subtotal: $ {{ calcularSubtotal(c) | number }}</span>
+      <button class="btn btn-sm btn-danger" (click)="eliminarComida(i)">Quitar</button>
+    </div>
+  </div>
+
+  <!-- BEBIDAS EN EL PEDIDO -->
+  <div class="tabla-pedido" *ngIf="servicioPedido.listaBebidas.length > 0">
+    <h4 class="text-warning">Bebidas</h4>
+    <div class="fila-pedido" *ngFor="let b of servicioPedido.listaBebidas; let i = index">
+      <span class="col-nombre">{{ b.nombre }}</span>
+      <span class="col-cantidad">Cantidad: {{ b.cantidad }}</span>
+      <span class="col-subtotal">Subtotal: $ {{ calcularSubtotal(b) | number }}</span>
+      <button class="btn btn-sm btn-danger" (click)="eliminarBebida(i)">Quitar</button>
+    </div>
+  </div>
+
+  <p class="text-light text-center" *ngIf="servicioPedido.listaComidas.length === 0 && servicioPedido.listaBebidas.length === 0">
+    ¡¡¡ Aún no se han agregado comidas ni bebidas al pedido !!!
+  </p>
+
+  <h3 class="text-warning text-end total-pedido" *ngIf="servicioPedido.listaComidas.length > 0 || servicioPedido.listaBebidas.length > 0">
+    Total: $ {{ calcularTotal() | number }}
+  </h3>
+
+  <!-- DATOS DEL COMPRADOR -->
+  <div class="datos-comprador">
+    <h4 class="text-warning">Datos Personales del Comprador</h4>
+    <input class="form-control mb-2" type="text" placeholder="Nombre completo . . ." [(ngModel)]="servicioPedido.nombreComprador">
+    <input class="form-control mb-2" type="text" placeholder="Teléfono . . ." [(ngModel)]="servicioPedido.telefonoComprador">
+    <input class="form-control mb-3" type="text" placeholder="Dirección de entrega . . ." [(ngModel)]="servicioPedido.direccionComprador">
+
+    <button class="btn btn-warning text-dark fw-bold w-100" (click)="confirmarPedido()">
+      Confirmar Pedido y Descargar PDF
+    </button>
+  </div>
+
+</section>

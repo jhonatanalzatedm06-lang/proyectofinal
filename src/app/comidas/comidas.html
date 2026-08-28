@@ -1,0 +1,79 @@
+<div class="barra-superior">
+  <div class="comidas">
+    <h2>CATEGORIAS 🍣</h2>
+  </div>
+
+  <div class="busquedas-container"> 
+    <form class="busqueda">
+      <input class="form-control me-2" type="text" placeholder="Buscar Comida por Nombre . . ." name="inputNombreTop"
+        [(ngModel)]="textoNombre">
+      <button (click)="buscarNombre()" class="btn btn-primary" type="button">Buscar</button>
+    </form>
+    <form class="busqueda">
+      <input class="form-control me-2" type="text" placeholder="Buscar Comida por Ingrediente . . ."
+        name="inputIngredienteTop" [(ngModel)]="textoIngrediente">
+      <button (click)="buscarIngrediente()" class="btn btn-primary" type="button">Buscar</button>
+    </form>
+  </div>
+</div>
+
+<section class="container-fluid py-2"> 
+
+  <div class="row categorias-row justify-content-center">
+    <div *ngFor="let c of categorias" class="col-lg-2 col-md-3 col-sm-4 mb-3">
+      <div class="card categoria-card text-center border-0 shadow-lg">
+        <img [src]="c.strCategoryThumb" class="card-img-top rounded-top" alt="{{ c.strCategory }}">
+        <div class="card-body">
+          <h5 class="card-title text-warning fw-semibold">{{ c.strCategory }}</h5>
+          <button class="btn btn-sm mt-2" (click)="verComidas(c.strCategory)">
+            Ver comidas
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="container-fluid p-0">
+  <div *ngIf="comidas && comidas.length > 0" class="row justify-content-center mb-4">
+    <div class="col-12 text-center">
+      <h2 class="text-warning fw-bold titulo-comidas">Nuestras Comidas</h2>
+      <hr class="border-warning w-25 mx-auto">
+    </div>
+  </div>
+
+  <div class="row justify-content-center mx-auto">
+    <div *ngFor="let m of comidas" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card comida-card text-center border-0 shadow-lg">
+        <img [src]="m.imagen" class="card-img-top rounded-top" alt="{{ m.nombre }}">
+        <div class="card-body">
+          <h5 class="card-title text-warning fw-semibold">{{ m.nombre }}</h5>
+          <p class="card-text text-light">
+            Ingredientes: {{ m.ingredientes.join(", ") }}
+          </p>
+          <!-- Cantidad y Agregar -->
+          <div class="d-flex align-items-center gap-2">
+  <input type="number"
+    class="form-control form-control-sm text-center text-black border-secondary border-opacity-50 rounded-2 shadow-sm"
+    style="width: 65px; height: 36px;" [(ngModel)]="m.cantidad" min="1">
+
+  <button (click)="agregarComida(m)"
+    class="btn btn-warning text-dark btn-sm flex-grow-1 fw-bold rounded-2 shadow-sm d-flex align-items-center justify-content-center gap-2">
+    🛒 Comprar
+  </button>
+  ...
+            <div class="position-absolute top-0 end-0 m-3">
+              <span class="badge rounded-pill px-3 py-2 border border-warning border-opacity-30 shadow-sm text-warning"
+                style="background-color: rgba(9, 14, 20, 0.85); backdrop-filter: blur(6px); font-size: 0.85rem; font-weight: 500;">
+                $ {{ m.precio | number }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
