@@ -46,7 +46,7 @@ export class Pedido implements OnInit {
     }
     if (this.servicioPedido.listaComidas.length === 0 && this.servicioPedido.listaBebidas.length === 0) {
       const modal = new (window as any).bootstrap.Modal(document.getElementById('myModal'));
-      this.mensajeModal = "¡¡¡ El pedido de esta persona ya fue despachado, vuelve a hacer otro !!!";
+      this.mensajeModal = "¡¡¡ Por favor, primero realiza un pedido !!!";
       modal.show();
       return;
     }
