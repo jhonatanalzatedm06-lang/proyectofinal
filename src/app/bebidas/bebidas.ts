@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ServicioBebidas } from '../servicios/servicio-bebida';
 import { Bebida } from '../entidades/bebida';
 import { ServicioPedido } from '../servicios/servicio-pedido';
+import { switchMap } from 'rxjs/operators';
+import { forkJoin, of} from 'rxjs';
 
 @Component({
   selector: 'app-bebidas',
@@ -77,15 +79,34 @@ export class Bebidas implements OnInit {
 
   // MÉTODO CORREGIDO: Evita el bucle forEach de peticiones
   verBebidas(categoria: string) {
-    this.textoNombre = '';
-    this.textoIngrediente = '';
-    this.tipoSeleccionado = '';
+  this.textoNombre = '';
+  this.textoIngrediente = '';
+  this.tipoSeleccionado = '';
 
-    this.servicioBebida.getBebidasPorCategoria(categoria).subscribe(data => {
-      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
+  this.servicioBebida.getBebidasPorCategoria(categoria).pipe(
+    switchMap((data: any) => {
+      const bebidasSimples = data.drinks ? data.drinks.slice(0, 12) : [];
+
+      if (bebidasSimples.length === 0) {
+        return of([]); // Si no hay bebidas, devolvemos un Observable con array vacío
+      }
+
+      const peticionesDetalle = bebidasSimples.map((b: any) => 
+        this.servicioBebida.getDetalleBebida(b.idDrink)
+      );
+
+      return forkJoin(peticionesDetalle);
+    })
+  ).subscribe({
+    next: (respuestasDetalle: any) => {
+      this.bebidas = respuestasDetalle.map((res: any) => 
+        this.crearBebidaBasica(res.drinks[0])
+      );
       this.cd.detectChanges();
-    });
-  }
+    },
+    error: (err) => console.error(err)
+  });
+}
 
   buscarNombre() {
     if (!this.textoNombre.trim()) {
@@ -113,9 +134,28 @@ export class Bebidas implements OnInit {
     this.tipoSeleccionado = '';
     this.categoriaSeleccionada = '';
 
-    this.servicioBebida.buscarBebidaPorIngrediente(this.textoIngrediente).subscribe(data => {
-      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
-      this.cd.detectChanges();
+    this.servicioBebida.buscarBebidaPorIngrediente(this.textoIngrediente).pipe(
+      switchMap((data: any) => {
+        const bebidasSimples = data.drinks ? data.drinks.slice(0, 12) : [];
+        
+        if (bebidasSimples.length === 0) {
+          return of([]);
+        }
+
+        const peticionesDetalle = bebidasSimples.map((b: any) => 
+          this.servicioBebida.getDetalleBebida(b.idDrink)
+        );
+
+        return forkJoin(peticionesDetalle);
+      })
+    ).subscribe({
+      next: (respuestasDetalle: any) => {
+        this.bebidas = respuestasDetalle.map((res: any) => 
+          this.crearBebidaBasica(res.drinks[0])
+        );
+        this.cd.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 
@@ -146,9 +186,28 @@ export class Bebidas implements OnInit {
       return;
     }
 
-    this.servicioBebida.getBebidasPorTipo(this.tipoSeleccionado).subscribe(data => {
-      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
-      this.cd.detectChanges();
+    this.servicioBebida.getBebidasPorTipo(this.tipoSeleccionado).pipe(
+      switchMap((data: any) => {
+        const bebidasSimples = data.drinks ? data.drinks.slice(0, 12) : [];
+        
+        if (bebidasSimples.length === 0) {
+          return of([]); 
+        }
+
+        const peticionesDetalle = bebidasSimples.map((b: any) => 
+          this.servicioBebida.getDetalleBebida(b.idDrink)
+        );
+
+        return forkJoin(peticionesDetalle);
+      })
+    ).subscribe({
+      next: (respuestasDetalle: any) => {
+        this.bebidas = respuestasDetalle.map((res: any) => 
+          this.crearBebidaBasica(res.drinks[0])
+        );
+        this.cd.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 

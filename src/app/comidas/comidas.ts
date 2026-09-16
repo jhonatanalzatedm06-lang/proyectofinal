@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ServicioComidas } from '../servicios/servicio-comida';
 import { Comida } from '../entidades/comida';
 import { ServicioPedido } from '../servicios/servicio-pedido';
+import { switchMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-comidas',
@@ -32,7 +34,6 @@ export class Comidas implements OnInit {
     });
   }
 
-  // MÉTODO OPTIMIZADO: Evita saturar la API con un bucle de 50 peticiones
   private crearComidaBasica(datosApi: any): Comida {
     const nuevaComida = new Comida();
     nuevaComida.id = Number(datosApi.idMeal);
@@ -40,7 +41,6 @@ export class Comidas implements OnInit {
     nuevaComida.categoria = datosApi.strCategory ? datosApi.strCategory : '';
     nuevaComida.imagen = datosApi.strMealThumb;
     
-    // Si la API trae ingredientes directamente, los extraemos. Si no, ponemos un texto base
     nuevaComida.ingredientes = datosApi.strIngredient1 ? this.extraerNombresIngredientes(datosApi) : ['Ver detalles para ingredientes...'];
     
     nuevaComida.cantidad = 1;
@@ -68,16 +68,37 @@ export class Comidas implements OnInit {
     return nuevoPrecio;
   }
 
+  // MÉTODO CORREGIDO
   verComidas(categoria: string) {
     this.textoNombre = '';
     this.textoIngrediente = '';
 
-    this.servicioComida.getComidasPorCategoria(categoria).subscribe(data => {
-      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComidaBasica(m)) : [];
-      this.cd.detectChanges();
+    this.servicioComida.getComidasPorCategoria(categoria).pipe(
+      switchMap((data: any) => {
+        const comidasSimples = data.meals ? data.meals.slice(0, 12) : [];
+        
+        if (comidasSimples.length === 0) {
+          return of([]);
+        }
+
+        const peticionesDetalle = comidasSimples.map((m: any) => 
+          this.servicioComida.getDetalleComida(m.idMeal)
+        );
+
+        return forkJoin(peticionesDetalle);
+      })
+    ).subscribe({
+      next: (respuestasDetalle: any) => {
+        this.comidas = respuestasDetalle.map((res: any) => 
+          this.crearComidaBasica(res.meals[0])
+        );
+        this.cd.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 
+  // Se mantiene igual porque la búsqueda por nombre en MealDB SÍ devuelve los ingredientes de una
   buscarNombre() {
     if (!this.textoNombre.trim()) {
       this.comidas = [];
@@ -91,6 +112,7 @@ export class Comidas implements OnInit {
     });
   }
 
+  // MÉTODO CORREGIDO
   buscarIngrediente() {
     if (!this.textoIngrediente.trim()) {
       this.comidas = [];
@@ -98,9 +120,28 @@ export class Comidas implements OnInit {
     }
     this.textoNombre = '';
 
-    this.servicioComida.buscarComidaPorIngrediente(this.textoIngrediente).subscribe(data => {
-      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComidaBasica(m)) : [];
-      this.cd.detectChanges();
+    this.servicioComida.buscarComidaPorIngrediente(this.textoIngrediente).pipe(
+      switchMap((data: any) => {
+        const comidasSimples = data.meals ? data.meals.slice(0, 12) : [];
+        
+        if (comidasSimples.length === 0) {
+          return of([]);
+        }
+
+        const peticionesDetalle = comidasSimples.map((m: any) => 
+          this.servicioComida.getDetalleComida(m.idMeal)
+        );
+
+        return forkJoin(peticionesDetalle);
+      })
+    ).subscribe({
+      next: (respuestasDetalle: any) => {
+        this.comidas = respuestasDetalle.map((res: any) => 
+          this.crearComidaBasica(res.meals[0])
+        );
+        this.cd.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 
