@@ -15,18 +15,22 @@ export class ServicioComidas {
   }
 
   getComidasPorCategoria(categoria: string): Observable<any> {
-    return this.http.get(this.apiUrl + 'filter.php?c=' + categoria);
+    const categoriaSegura = encodeURIComponent(categoria);
+    return this.http.get(this.apiUrl + 'filter.php?c=' + categoriaSegura);
   }
 
   getDetalleComida(id: string): Observable<any> {
-    return this.http.get(this.apiUrl + 'lookup.php?i=' + id);
+    const idSeguro = encodeURIComponent(id);
+    return this.http.get(this.apiUrl + 'lookup.php?i=' + idSeguro);
   }
 
   buscarComidaPorNombre(nombre: string): Observable<any> {
-    return this.http.get(this.apiUrl + 'search.php?s=' + nombre);
+    const nombreSeguro = encodeURIComponent(nombre);
+    return this.http.get(this.apiUrl + 'search.php?s=' + nombreSeguro);
   }
 
   buscarComidaPorIngrediente(ingrediente: string): Observable<any> {
-    return this.http.get(this.apiUrl + 'filter.php?i=' + ingrediente);
+    const ingredienteSeguro = encodeURIComponent(ingrediente);
+    return this.http.get(this.apiUrl + 'filter.php?i=' + ingredienteSeguro);
   }
 }

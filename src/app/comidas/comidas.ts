@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // 
+import { FormsModule } from '@angular/forms';
 import { ServicioComidas } from '../servicios/servicio-comida';
 import { Comida } from '../entidades/comida';
 import { ServicioPedido } from '../servicios/servicio-pedido';
@@ -32,13 +32,17 @@ export class Comidas implements OnInit {
     });
   }
 
-  private crearComida(datosApi: any): Comida {
+  // MÉTODO OPTIMIZADO: Evita saturar la API con un bucle de 50 peticiones
+  private crearComidaBasica(datosApi: any): Comida {
     const nuevaComida = new Comida();
     nuevaComida.id = Number(datosApi.idMeal);
     nuevaComida.nombre = datosApi.strMeal;
     nuevaComida.categoria = datosApi.strCategory ? datosApi.strCategory : '';
     nuevaComida.imagen = datosApi.strMealThumb;
-    nuevaComida.ingredientes = this.extraerNombresIngredientes(datosApi);
+    
+    // Si la API trae ingredientes directamente, los extraemos. Si no, ponemos un texto base
+    nuevaComida.ingredientes = datosApi.strIngredient1 ? this.extraerNombresIngredientes(datosApi) : ['Ver detalles para ingredientes...'];
+    
     nuevaComida.cantidad = 1;
     nuevaComida.precio = this.calcularPrecio(nuevaComida.id);
     return nuevaComida;
@@ -54,7 +58,7 @@ export class Comidas implements OnInit {
     }
     return ingredientes;
   }
-
+  
   private calcularPrecio(id: number): number {
     if (this.preciosCache.has(id)) {
       return this.preciosCache.get(id)!;
@@ -69,16 +73,8 @@ export class Comidas implements OnInit {
     this.textoIngrediente = '';
 
     this.servicioComida.getComidasPorCategoria(categoria).subscribe(data => {
-      const comidasBasicas = data.meals;
-      this.comidas = [];
-
-      comidasBasicas.forEach((m: any) => {
-        this.servicioComida.getDetalleComida(m.idMeal).subscribe(detalle => {
-          const nuevaComida = this.crearComida(detalle.meals[0]);
-          this.comidas.push(nuevaComida);
-          this.cd.detectChanges();
-        });
-      });
+      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComidaBasica(m)) : [];
+      this.cd.detectChanges();
     });
   }
 
@@ -90,7 +86,7 @@ export class Comidas implements OnInit {
     this.textoIngrediente = '';
 
     this.servicioComida.buscarComidaPorNombre(this.textoNombre).subscribe(data => {
-      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComida(m)) : [];
+      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComidaBasica(m)) : [];
       this.cd.detectChanges();
     });
   }
@@ -103,30 +99,19 @@ export class Comidas implements OnInit {
     this.textoNombre = '';
 
     this.servicioComida.buscarComidaPorIngrediente(this.textoIngrediente).subscribe(data => {
-      const comidas = data.meals;
-      this.comidas = [];
-      if (!comidas) return;
-
-      comidas.forEach((m: any) => {
-        this.servicioComida.getDetalleComida(m.idMeal).subscribe(detalle => {
-          const nuevaComida = this.crearComida(detalle.meals[0]);
-          this.comidas.push(nuevaComida);
-          this.cd.detectChanges();
-        });
-      });
+      this.comidas = data.meals ? data.meals.map((m: any) => this.crearComidaBasica(m)) : [];
+      this.cd.detectChanges();
     });
   }
 
   verIngredientes(id: string) {
     this.servicioComida.getDetalleComida(id).subscribe(data => {
-      this.detalleComida = this.crearComida(data.meals[0]);
+      this.detalleComida = this.crearComidaBasica(data.meals[0]);
       this.cd.detectChanges();
     });
   }
 
   agregarComida(comida: Comida) {
-    // Hacemos una copia para que si luego cambias la cantidad en la tarjeta,
-    // no se altere lo que ya quedó guardado en el pedido
     const copia: Comida = { ...comida };
     this.servicioPedido.agregarComida(copia);
 

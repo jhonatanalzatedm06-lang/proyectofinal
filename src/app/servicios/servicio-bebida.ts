@@ -16,22 +16,28 @@ export class ServicioBebidas {
     }
 
     getBebidasPorCategoria(categoria: string): Observable<any> {
-        return this.http.get(this.apiUrl + 'filter.php?c=' + categoria);
+        // Codificamos el texto para que la barra '/' y los espacios no rompan la URL
+        const categoriaSegura = encodeURIComponent(categoria);
+        return this.http.get(this.apiUrl + 'filter.php?c=' + categoriaSegura);
     }
 
     getDetalleBebida(id: string): Observable<any> {
-        return this.http.get(this.apiUrl + 'lookup.php?i=' + id);
+        const idSeguro = encodeURIComponent(id);
+        return this.http.get(this.apiUrl + 'lookup.php?i=' + idSeguro);
     }
 
     buscarBebidaPorNombre(nombre: string): Observable<any> {
-        return this.http.get(this.apiUrl + 'search.php?s=' + nombre);
+        const nombreSeguro = encodeURIComponent(nombre);
+        return this.http.get(this.apiUrl + 'search.php?s=' + nombreSeguro);
     }
 
     buscarBebidaPorIngrediente(ingrediente: string): Observable<any> {
-        return this.http.get(this.apiUrl + 'filter.php?i=' + ingrediente);
+        const ingredienteSeguro = encodeURIComponent(ingrediente);
+        return this.http.get(this.apiUrl + 'filter.php?i=' + ingredienteSeguro);
     }
 
     getBebidasPorTipo(tipo: string): Observable<any> {
-        return this.http.get(this.apiUrl + 'filter.php?a=' + tipo);
+        const tipoSeguro = encodeURIComponent(tipo);
+        return this.http.get(this.apiUrl + 'filter.php?a=' + tipoSeguro);
     }
 }

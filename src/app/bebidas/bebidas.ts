@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServicioBebidas } from '../servicios/servicio-bebida';
-import { Bebida } from '../entidades/bebida'; // Asegúrate de tener esta clase
+import { Bebida } from '../entidades/bebida';
 import { ServicioPedido } from '../servicios/servicio-pedido';
 
 @Component({
@@ -30,7 +30,6 @@ export class Bebidas implements OnInit {
 
   ngOnInit(): void {
     this.servicioBebida.getCategorias().subscribe(data => {
-
       this.categorias = data.drinks ? data.drinks.slice(0, 6).map((c: any) => ({
         strCategory: c.strCategory,
         strCategoryThumb: 'https://www.thecocktaildb.com/images/media/drink/vrwquq1441552346.jpg'
@@ -39,13 +38,18 @@ export class Bebidas implements OnInit {
     });
   }
 
-  private crearBebida(datosApi: any): Bebida {
+  // MÉTODO OPTIMIZADO: Crea la bebida con los datos que ya vienen
+  private crearBebidaBasica(datosApi: any): Bebida {
     const nuevaBebida = new Bebida();
     nuevaBebida.id = Number(datosApi.idDrink);
     nuevaBebida.nombre = datosApi.strDrink;
-    nuevaBebida.categoria = datosApi.strCategory ? datosApi.strCategory : '';
     nuevaBebida.imagen = datosApi.strDrinkThumb;
-    nuevaBebida.ingredientes = this.extraerNombresIngredientes(datosApi);
+    nuevaBebida.categoria = datosApi.strCategory ? datosApi.strCategory : '';
+    
+    // Si la búsqueda trajo ingredientes (búsqueda avanzada), los procesamos
+    // Si no (búsqueda por categoría), ponemos un texto base.
+    nuevaBebida.ingredientes = datosApi.strIngredient1 ? this.extraerNombresIngredientes(datosApi) : ['Ver detalles para ingredientes...'];
+    
     nuevaBebida.cantidad = 1;
     nuevaBebida.precio = this.calcularPrecio(nuevaBebida.id);
     return nuevaBebida;
@@ -71,24 +75,15 @@ export class Bebidas implements OnInit {
     return nuevoPrecio;
   }
 
+  // MÉTODO CORREGIDO: Evita el bucle forEach de peticiones
   verBebidas(categoria: string) {
     this.textoNombre = '';
     this.textoIngrediente = '';
     this.tipoSeleccionado = '';
 
     this.servicioBebida.getBebidasPorCategoria(categoria).subscribe(data => {
-      const bebidasBasicas = data.drinks;
-      this.bebidas = [];
-
-      if (!bebidasBasicas) return;
-
-      bebidasBasicas.forEach((b: any) => {
-        this.servicioBebida.getDetalleBebida(b.idDrink).subscribe(detalle => {
-          const nuevaBebida = this.crearBebida(detalle.drinks[0]);
-          this.bebidas.push(nuevaBebida);
-          this.cd.detectChanges();
-        });
-      });
+      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
+      this.cd.detectChanges();
     });
   }
 
@@ -101,12 +96,14 @@ export class Bebidas implements OnInit {
     this.tipoSeleccionado = '';
     this.categoriaSeleccionada = '';
 
+    // La búsqueda por nombre SÍ trae ingredientes, así que se mostrarán solos
     this.servicioBebida.buscarBebidaPorNombre(this.textoNombre).subscribe(data => {
-      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebida(b)) : [];
+      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
       this.cd.detectChanges();
     });
   }
 
+  // MÉTODO CORREGIDO: Evita el bucle forEach de peticiones
   buscarIngrediente() {
     if (!this.textoIngrediente.trim()) {
       this.bebidas = [];
@@ -117,23 +114,14 @@ export class Bebidas implements OnInit {
     this.categoriaSeleccionada = '';
 
     this.servicioBebida.buscarBebidaPorIngrediente(this.textoIngrediente).subscribe(data => {
-      const bebidasData = data.drinks;
-      this.bebidas = [];
-      if (!bebidasData) return;
-
-      bebidasData.forEach((b: any) => {
-        this.servicioBebida.getDetalleBebida(b.idDrink).subscribe(detalle => {
-          const nuevaBebida = this.crearBebida(detalle.drinks[0]);
-          this.bebidas.push(nuevaBebida);
-          this.cd.detectChanges();
-        });
-      });
+      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
+      this.cd.detectChanges();
     });
   }
 
   verIngredientes(id: string) {
     this.servicioBebida.getDetalleBebida(id).subscribe(data => {
-      this.detalleBebida = this.crearBebida(data.drinks[0]);
+      this.detalleBebida = this.crearBebidaBasica(data.drinks[0]);
       this.cd.detectChanges();
     });
   }
@@ -147,6 +135,7 @@ export class Bebidas implements OnInit {
     modal.show();
   }
 
+  // MÉTODO CORREGIDO: Evita el bucle forEach de peticiones
   filtrarPorTipo() {
     this.textoNombre = '';
     this.textoIngrediente = '';
@@ -158,29 +147,17 @@ export class Bebidas implements OnInit {
     }
 
     this.servicioBebida.getBebidasPorTipo(this.tipoSeleccionado).subscribe(data => {
-      const bebidasBasicas = data.drinks;
-      this.bebidas = [];
-      if (!bebidasBasicas) return;
-
-      bebidasBasicas.forEach((b: any) => {
-        this.servicioBebida.getDetalleBebida(b.idDrink).subscribe(detalle => {
-          const nuevaBebida = this.crearBebida(detalle.drinks[0]);
-          this.bebidas.push(nuevaBebida);
-          this.cd.detectChanges();
-        });
-      });
+      this.bebidas = data.drinks ? data.drinks.map((b: any) => this.crearBebidaBasica(b)) : [];
+      this.cd.detectChanges();
     });
   }
 
   filtrarPorCategoria() {
     this.tipoSeleccionado = '';
-
     if (!this.categoriaSeleccionada) {
       this.bebidas = [];
       return;
     }
-
     this.verBebidas(this.categoriaSeleccionada);
   }
 }
-
